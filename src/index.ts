@@ -1,5 +1,6 @@
 import ArrayPrototypeIncludes from "array-includes";
 import ObjectEntries from "object.entries";
+import ObjectHasOwn from "object.hasown";
 
 import { Config } from "./types";
 import { objectGetOwn } from "./utils";
@@ -8,6 +9,7 @@ import {
   validateBoolean,
   validateObject,
   validateUnion,
+  validateString,
 } from "./validators";
 
 function getMainArgs() {
@@ -50,6 +52,11 @@ export const parseArgs = <T extends Config>(config: T) => {
       `options.${longOption}.type`,
       ["string", "boolean"]
     );
+
+    if (ObjectHasOwn(optionConfig, "short")) {
+      const shortOption = optionConfig.short;
+      validateString(shortOption, `options.${longOption}.short`);
+    }
   });
 
   console.log(parseConfig);

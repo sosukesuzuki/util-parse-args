@@ -77,3 +77,15 @@ export const validateUnion = <T>(value: T, name: string, union: T[]) => {
     throw new Error(`The argument ${name} is invalid.`);
   }
 };
+
+/**
+ * https://github.com/nodejs/node/blob/2a4452a53af65a13db4efae474162a7dcfd38dd5/lib/internal/validators.js#L159
+ */
+export function validateString(
+  value: unknown,
+  name: string
+): asserts value is string {
+  if (typeof value !== "string") {
+    throw new Error(`The argument ${name} is invalid.`);
+  }
+}
