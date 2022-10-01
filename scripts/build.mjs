@@ -7,7 +7,7 @@ const baseOptions = {
   entryPoints: ["./src/index.ts"],
   minify: true,
   bundle: true,
-  target: "node4",
+  target: "node6",
   platform: "node",
 };
 

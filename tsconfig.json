@@ -6,7 +6,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "declaration": false
+    "declaration": false,
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": ["src/**/*.ts"]
 }
