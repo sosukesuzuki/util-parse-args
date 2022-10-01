@@ -1,2 +1,4 @@
 /node_modules
 /lib
+foo.js
+npm-debug.log
