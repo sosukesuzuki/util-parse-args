@@ -15,6 +15,9 @@
     "email": "aosukeke@gmail.com"
   },
   "license": "MIT",
+  "files": [
+    "./lib"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.3",
