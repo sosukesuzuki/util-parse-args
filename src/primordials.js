@@ -5,9 +5,9 @@ module.exports = {
   ArrayPrototypeIncludes: require("array-includes"),
   ArrayPrototypeMap: require("array.prototype.map"),
   ArrayPrototypePush: require("array.prototype.push"),
-  ArrayPrototypePushApply: function () {
+  ArrayPrototypePushApply: function (thisArg, args) {
     const push = require("array.prototype.push");
-    return push(arguments[0], arguments[1]);
+    return push.apply(void 0, [thisArg].concat(args));
   },
   ArrayPrototypeShift: function () {
     const args = Array.prototype.slice.call(arguments);
@@ -16,9 +16,9 @@ module.exports = {
   },
   ArrayPrototypeSlice: require("array.prototype.slice"),
   ArrayPrototypeJoin: require("array.prototype.join"),
-  ArrayPrototypeUnshiftApply: function () {
+  ArrayPrototypeUnshiftApply: function (thisArg, args) {
     const unshift = require("array.prototype.unshift");
-    return unshift(arguments[0], arguments[1]);
+    return unshift.apply(void 0, [thisArg].concat(args));
   },
   ArrayPrototypeFind: require("array.prototype.find"),
   ArrayIsArray: Array.isArray,
