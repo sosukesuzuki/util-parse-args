@@ -1,1 +1,3 @@
-console.log("foobar");
+export function parseArgs() {
+  // TODO: implement
+}
