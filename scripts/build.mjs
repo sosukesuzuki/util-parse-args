@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
+/*eslint-env es2022*/
+
 import { build } from "esbuild";
 
 /** @type {import('esbuild').BuildOptions} */
 const baseOptions = {
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/index.js"],
   minify: true,
   bundle: true,
   target: "node6",

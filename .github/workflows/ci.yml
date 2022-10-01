@@ -43,6 +43,3 @@ jobs:
 
       - name: Run Prettier
         run: npm run lint:prettier
-
-      - name: Run type checking
-        run: npm run lint:typecheck

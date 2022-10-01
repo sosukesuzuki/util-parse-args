@@ -2,7 +2,6 @@ import ArrayPrototypeIncludes from "array-includes";
 import ObjectEntries from "object.entries";
 import ObjectHasOwn from "object.hasown";
 
-import { ParseArgsConfig } from "./types";
 import { objectGetOwn } from "./utils";
 import {
   validateArray,
@@ -28,7 +27,7 @@ function getMainArgs() {
 /**
  * https://github.com/nodejs/node/blob/main/lib/internal/util/parse_args/parse_args.js
  */
-export const parseArgs = <T extends ParseArgsConfig>(config: T) => {
+export const parseArgs = (config) => {
   const args = objectGetOwn(config, "args") ?? getMainArgs();
   const strict = objectGetOwn(config, "strict") ?? true;
   const allowPositionals = objectGetOwn(config, "allowPositionals") ?? !strict;
@@ -44,7 +43,10 @@ export const parseArgs = <T extends ParseArgsConfig>(config: T) => {
   validateBoolean(returnTokens, "tokens");
   validateObject(options, "options");
 
-  ObjectEntries(options).forEach(({ 0: longOption, 1: optionConfig }) => {
+  ObjectEntries(options).forEach((option) => {
+    const longOption = option[0];
+    const optionConfig = option[1];
+
     validateObject(optionConfig, `options.${longOption}`);
 
     validateUnion(
