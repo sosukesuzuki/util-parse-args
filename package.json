@@ -2,13 +2,7 @@
   "name": "util-parse-args",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
-    }
-  },
+  "main": "./lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
     "lint": "run-p lint:*",
