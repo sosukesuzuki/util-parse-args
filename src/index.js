@@ -51,9 +51,6 @@ const {
 } = require("./errors");
 
 function getMainArgs() {
-  // Work out where to slice process.argv for user supplied arguments.
-
-  // Check node options for scenarios where user CLI args follow executable.
   const execArgv = process.execArgv;
   if (
     ArrayPrototypeIncludes(execArgv, "-e") ||
@@ -63,16 +60,9 @@ function getMainArgs() {
   ) {
     return ArrayPrototypeSlice(process.argv, 1);
   }
-
-  // Normally first two arguments are executable and script, then CLI arguments
   return ArrayPrototypeSlice(process.argv, 2);
 }
 
-/**
- * In strict mode, throw for possible usage errors like --foo --bar
- *
- * @param {object} token - from tokens as available from parseArgs
- */
 function checkOptionLikeValue(token) {
   if (!token.inlineValue && isOptionLikeValue(token.value)) {
     // Only show short example if user used short option.
@@ -86,12 +76,6 @@ To specify an option argument starting with a dash use ${example}.`;
   }
 }
 
-/**
- * In strict mode, throw for usage errors.
- *
- * @param {object} config - from config passed to parseArgs
- * @param {object} token - from tokens as available from parseArgs
- */
 function checkOptionUsage(config, token) {
   if (!ObjectHasOwn(config.options, token.name)) {
     throw new ERR_PARSE_ARGS_UNKNOWN_OPTION(
@@ -108,7 +92,6 @@ function checkOptionUsage(config, token) {
       `Option '${shortAndLong} <value>' argument missing`
     );
   }
-  // (Idiomatic test for undefined||null, expecting undefined.)
   if (type === "boolean" && token.value != null) {
     throw new ERR_PARSE_ARGS_INVALID_OPTION_VALUE(
       `Option '${shortAndLong}' does not take an argument`
@@ -116,28 +99,13 @@ function checkOptionUsage(config, token) {
   }
 }
 
-/**
- * Store the option value in `values`.
- *
- * @param {string} longOption - long option name e.g. 'foo'
- * @param {string|undefined} optionValue - value from user args
- * @param {object} options - option configs, from parseArgs({ options })
- * @param {object} values - option values returned in `values` by parseArgs
- */
 function storeOption(longOption, optionValue, options, values) {
   if (longOption === "__proto__") {
     return; // No. Just no.
   }
 
-  // We store based on the option value rather than option type,
-  // preserving the users intent for author to deal with.
   const newValue = optionValue ?? true;
   if (optionsGetOwn(options, longOption, "multiple")) {
-    // Always store value in array, including for boolean.
-    // values[longOption] starts out not present,
-    // first value is added as new array [newValue],
-    // subsequent values are pushed to existing array.
-    // (note: values has null prototype, so simpler usage)
     if (values[longOption]) {
       ArrayPrototypePush(values[longOption], newValue);
     } else {
@@ -148,15 +116,6 @@ function storeOption(longOption, optionValue, options, values) {
   }
 }
 
-/**
- * Process args and turn into identified tokens:
- * - option (along with value, if any)
- * - positional
- * - option-terminator
- *
- * @param {string[]} args - from parseArgs({ args }) or mainArgs
- * @param {object} options - option configs, from parseArgs({ options })
- */
 function argsToTokens(args, options) {
   const tokens = [];
   let index = -1;
@@ -169,10 +128,7 @@ function argsToTokens(args, options) {
     if (groupCount > 0) groupCount--;
     else index++;
 
-    // Check if `arg` is an options terminator.
-    // Guideline 10 in https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
     if (arg === "--") {
-      // Everything after a bare '--' is considered a positional argument.
       ArrayPrototypePush(tokens, { kind: "option-terminator", index });
       ArrayPrototypePushApply(
         tokens,
@@ -180,11 +136,10 @@ function argsToTokens(args, options) {
           return { kind: "positional", index: ++index, value: arg };
         })
       );
-      break; // Finished processing args, leave while loop.
+      break;
     }
 
     if (isLoneShortOption(arg)) {
-      // e.g. '-f'
       const shortOption = StringPrototypeCharAt(arg, 1);
       const longOption = findLongOptionForShort(shortOption, options);
       let value;
@@ -193,7 +148,6 @@ function argsToTokens(args, options) {
         optionsGetOwn(options, longOption, "type") === "string" &&
         isOptionValue(nextArg)
       ) {
-        // e.g. '-f', 'bar'
         value = ArrayPrototypeShift(remainingArgs);
         inlineValue = false;
       }
@@ -210,7 +164,6 @@ function argsToTokens(args, options) {
     }
 
     if (isShortOptionGroup(arg, options)) {
-      // Expand -fXzy to -f -X -z -y
       const expanded = [];
       for (let index = 1; index < arg.length; index++) {
         const shortOption = StringPrototypeCharAt(arg, index);
@@ -219,13 +172,10 @@ function argsToTokens(args, options) {
           optionsGetOwn(options, longOption, "type") !== "string" ||
           index === arg.length - 1
         ) {
-          // Boolean option, or last short in group. Well formed.
           ArrayPrototypePush(expanded, `-${shortOption}`);
         } else {
-          // String option in middle. Yuck.
-          // Expand -abfFILE to -a -b -fFILE
           ArrayPrototypePush(expanded, `-${StringPrototypeSlice(arg, index)}`);
-          break; // finished short group
+          break;
         }
       }
       ArrayPrototypeUnshiftApply(remainingArgs, expanded);
@@ -234,7 +184,6 @@ function argsToTokens(args, options) {
     }
 
     if (isShortOptionAndValue(arg, options)) {
-      // e.g. -fFILE
       const shortOption = StringPrototypeCharAt(arg, 1);
       const longOption = findLongOptionForShort(shortOption, options);
       const value = StringPrototypeSlice(arg, 2);
@@ -250,7 +199,6 @@ function argsToTokens(args, options) {
     }
 
     if (isLoneLongOption(arg)) {
-      // e.g. '--foo'
       const longOption = StringPrototypeSlice(arg, 2);
       let value;
       let inlineValue;
@@ -258,7 +206,6 @@ function argsToTokens(args, options) {
         optionsGetOwn(options, longOption, "type") === "string" &&
         isOptionValue(nextArg)
       ) {
-        // e.g. '--foo', 'bar'
         value = ArrayPrototypeShift(remainingArgs);
         inlineValue = false;
       }
@@ -275,7 +222,6 @@ function argsToTokens(args, options) {
     }
 
     if (isLongOptionAndValue(arg)) {
-      // e.g. --foo=bar
       const equalIndex = StringPrototypeIndexOf(arg, "=");
       const longOption = StringPrototypeSlice(arg, 2, equalIndex);
       const value = StringPrototypeSlice(arg, equalIndex + 1);
@@ -301,10 +247,8 @@ const parseArgs = (config = kEmptyObject) => {
   const allowPositionals = objectGetOwn(config, "allowPositionals") ?? !strict;
   const returnTokens = objectGetOwn(config, "tokens") ?? false;
   const options = objectGetOwn(config, "options") ?? { __proto__: null };
-  // Bundle these up for passing to strict-mode checks.
   const parseConfig = { args, strict, options, allowPositionals };
 
-  // Validate input configuration.
   validateArray(args, "args");
   validateBoolean(strict, "strict");
   validateBoolean(allowPositionals, "allowPositionals");
@@ -315,7 +259,6 @@ const parseArgs = (config = kEmptyObject) => {
     ({ 0: longOption, 1: optionConfig }) => {
       validateObject(optionConfig, `options.${longOption}`);
 
-      // type is required
       validateUnion(
         objectGetOwn(optionConfig, "type"),
         `options.${longOption}.type`,
@@ -343,10 +286,8 @@ const parseArgs = (config = kEmptyObject) => {
     }
   );
 
-  // Phase 1: identify tokens
   const tokens = argsToTokens(args, options);
 
-  // Phase 2: process tokens into parsed option values and positionals
   const result = {
     values: { __proto__: null },
     positionals: [],
