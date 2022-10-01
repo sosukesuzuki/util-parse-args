@@ -22,7 +22,6 @@ jobs:
           - "8"
           - "6"
           - "4"
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
