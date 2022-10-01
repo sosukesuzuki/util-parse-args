@@ -23,14 +23,25 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "array-includes": "^3.1.5",
     "esbuild": "^0.15.10",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "npm-run-all": "^4.1.5",
-    "object.entries": "^1.1.5",
-    "object.hasown": "^1.1.1",
     "prettier": "^2.7.1",
     "vitest": "^0.23.4"
+  },
+  "dependencies": {
+    "array.prototype.find": "^2.2.0",
+    "array.prototype.foreach": "^1.0.2",
+    "array.prototype.join": "^1.0.0",
+    "array.prototype.map": "^1.0.4",
+    "array.prototype.push": "^1.0.2",
+    "array.prototype.slice": "^1.0.0",
+    "array.prototype.unshift": "^1.0.0",
+    "array-includes": "^3.1.5",
+    "object.entries": "^1.1.5",
+    "object.hasown": "^1.1.1",
+    "string.prototype.includes": "^2.0.0",
+    "string.prototype.startswith": "^1.0.0"
   }
 }
