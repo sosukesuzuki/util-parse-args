@@ -2,7 +2,7 @@ import ArrayPrototypeIncludes from "array-includes";
 import ObjectEntries from "object.entries";
 import ObjectHasOwn from "object.hasown";
 
-import { Config } from "./types";
+import { ParseArgsConfig } from "./types";
 import { objectGetOwn } from "./utils";
 import {
   validateArray,
@@ -28,7 +28,7 @@ function getMainArgs() {
 /**
  * https://github.com/nodejs/node/blob/main/lib/internal/util/parse_args/parse_args.js
  */
-export const parseArgs = <T extends Config>(config: T) => {
+export const parseArgs = <T extends ParseArgsConfig>(config: T) => {
   const args = objectGetOwn(config, "args") ?? getMainArgs();
   const strict = objectGetOwn(config, "strict") ?? true;
   const allowPositionals = objectGetOwn(config, "allowPositionals") ?? !strict;

@@ -8,7 +8,7 @@ interface ParseArgsOptionsConfig {
   [longOption: string]: ParseArgsOptionConfig;
 }
 
-export interface Config {
+export interface ParseArgsConfig {
   strict?: boolean;
   allowPositionals?: boolean;
   tokens?: boolean;
