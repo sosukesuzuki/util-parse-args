@@ -6,7 +6,11 @@ module.exports = {
   ArrayPrototypeMap: require("array.prototype.map"),
   ArrayPrototypePush: require("array.prototype.push"),
   ArrayPrototypePushApply: require("array.prototype.push").apply,
-  ArrayPrototypeShift: Array.prototype.shift.call,
+  ArrayPrototypeShift: function () {
+    const args = Array.prototype.slice.call(arguments);
+    args.shift();
+    return Array.prototype.shift.apply(arguments[0], args);
+  },
   ArrayPrototypeSlice: require("array.prototype.slice"),
   ArrayPrototypeJoin: require("array.prototype.join"),
   ArrayPrototypeUnshiftApply: require("array.prototype.unshift").apply,
@@ -16,9 +20,21 @@ module.exports = {
   ObjectHasOwn: require("object.hasown"),
   ObjectFreeze: Object.freeze,
   ObjectCreate: Object.create,
-  StringPrototypeCharAt: String.prototype.charAt.call,
-  StringPrototypeIndexOf: String.prototype.indexOf,
-  StringPrototypeSlice: String.prototype.slice,
+  StringPrototypeCharAt: function () {
+    const args = Array.prototype.slice.call(arguments);
+    args.shift();
+    return String.prototype.charAt.apply(arguments[0], args);
+  },
+  StringPrototypeIndexOf: function () {
+    const args = Array.prototype.slice.call(arguments);
+    args.shift();
+    return String.prototype.indexOf.apply(arguments[0], args);
+  },
+  StringPrototypeSlice: function () {
+    const args = Array.prototype.slice.call(arguments);
+    args.shift();
+    return String.prototype.slice.apply(arguments[0], args);
+  },
   StringPrototypeStartsWith: require("string.prototype.startswith"),
   StringPrototypeIncludes: require("string.prototype.includes"),
 };
