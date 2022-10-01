@@ -56,6 +56,15 @@ export const parseArgs = <T extends Config>(config: T) => {
     if (ObjectHasOwn(optionConfig, "short")) {
       const shortOption = optionConfig.short;
       validateString(shortOption, `options.${longOption}.short`);
+      if (shortOption.length !== 1) {
+        throw new Error(
+          `The argument options.${longOption}.short is must be a single character.`
+        );
+      }
+    }
+
+    if (ObjectHasOwn(optionConfig, "multiple")) {
+      validateBoolean(optionConfig.multiple, `options.${longOption}.multiple`);
     }
   });
 
