@@ -37,20 +37,3 @@ jobs:
 
       - name: Run Test
         run: npm run test
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install Dependencies
-        run: npm i
-
-      - name: Run ESLint
-        run: npm run lint:eslint
-
-      - name: Run Prettier
-        run: npm run lint:prettier
