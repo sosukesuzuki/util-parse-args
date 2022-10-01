@@ -1,8 +1,10 @@
+import ObjectHasOwn from "object.hasown";
+
 export function objectGetOwn<T extends object, S extends keyof T>(
   obj: T,
   prop: S
 ) {
-  if (Object.hasOwn(obj, prop)) {
+  if (ObjectHasOwn(obj, prop)) {
     return obj[prop];
   }
 }

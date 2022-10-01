@@ -1,4 +1,5 @@
 import ArrayPrototypeIncludes from "array-includes";
+import ObjectHasOwn from "object.hasown";
 
 /**
  * https://github.com/nodejs/node/blob/2a4452a53af65a13db4efae474162a7dcfd38dd5/lib/internal/validators.js#L261
@@ -35,7 +36,7 @@ function getOwnPropertyValueOrDefault<T extends object, S extends keyof T>(
   key: S,
   defaultValue: NonNullable<T[S]>
 ): NonNullable<T[S]> {
-  return options == null || !Object.hasOwn(options, key)
+  return options == null || !ObjectHasOwn(options, key)
     ? defaultValue
     : (options[key] as NonNullable<T[S]>);
 }
