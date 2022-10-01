@@ -20,5 +20,5 @@ module.exports = {
   StringPrototypeIndexOf: String.prototype.indexOf,
   StringPrototypeSlice: String.prototype.slice,
   StringPrototypeStartsWith: require("string.prototype.startswith"),
-  StringPrototypeIncludes: require("string.prototype.includes")
+  StringPrototypeIncludes: require("string.prototype.includes"),
 };

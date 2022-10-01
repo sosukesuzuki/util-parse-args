@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build": "node ./scripts/build.mjs",
+    "build": "babel src -d lib",
     "test:unit": "vitest run",
     "lint": "run-p lint:*",
     "lint:eslint": "eslint src --ext=.ts",
@@ -23,6 +23,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
     "esbuild": "^0.15.10",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
@@ -31,6 +34,7 @@
     "vitest": "^0.23.4"
   },
   "dependencies": {
+    "array-includes": "^3.1.5",
     "array.prototype.find": "^2.2.0",
     "array.prototype.foreach": "^1.0.2",
     "array.prototype.join": "^1.0.0",
@@ -38,7 +42,6 @@
     "array.prototype.push": "^1.0.2",
     "array.prototype.slice": "^1.0.0",
     "array.prototype.unshift": "^1.0.0",
-    "array-includes": "^3.1.5",
     "object.entries": "^1.1.5",
     "object.hasown": "^1.1.1",
     "string.prototype.includes": "^2.0.0",
