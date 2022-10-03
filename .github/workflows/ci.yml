@@ -55,12 +55,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-lib
-
-      - name: Debug pwd
-        run: pwd
-
-      - name: Debug ls
-        run: ls .
+          path: lib/
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
