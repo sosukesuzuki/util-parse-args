@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: built-lib
-          path: ./lib
+          path: lib/
 
   test:
     strategy:
@@ -55,6 +55,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-lib
+
+      - name: Debug pwd
+        run: pwd
+
+      - name: Debug ls
+        run: ls .
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
